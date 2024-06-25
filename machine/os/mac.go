@@ -33,36 +33,15 @@ type macSysInfoStruct struct {
 }
 
 func (mac MacMachine) GetMachine() (types.Information, error) {
-	platformUUID, err := mac.GetPlatformUUID()
-	if err != nil {
-		return types.Information{}, err
-	}
-	boardSerialNumber, err := mac.GetBoardSerialNumber()
+	sysInfo, err := mac.GetMacSysInfo()
 	if err != nil {
 		return types.Information{}, err
 	}
 
-	machineData := types.Information{
-		PlatformUUID:      platformUUID,
-		BoardSerialNumber: boardSerialNumber,
-	}
-	return machineData, nil
-}
-
-func (mac MacMachine) GetBoardSerialNumber() (data string, err error) {
-	sysInfo, err := mac.GetMacSysInfo()
-	if err != nil {
-		return "", err
-	}
-	return sysInfo.BoardSerialNumber, err
-}
-
-func (mac MacMachine) GetPlatformUUID() (UUID string, err error) {
-	sysInfo, err := mac.GetMacSysInfo()
-	if err != nil {
-		return "", err
-	}
-	return sysInfo.PlatformUUID, err
+	return types.Information{
+		PlatformUUID:      sysInfo.PlatformUUID,
+		BoardSerialNumber: sysInfo.BoardSerialNumber,
+	}, nil
 }
 
 func (mac MacMachine) GetCpuSerialNumber() (cpuId string, err error) {
