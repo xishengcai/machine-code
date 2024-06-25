@@ -12,6 +12,16 @@ import (
 
 type MacMachine struct{}
 
+func (mac MacMachine) GetBoardSerialNumber() (string, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (mac MacMachine) GetPlatformUUID() (string, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
 var macMachineData types.Information
 
 type macSysInfoStruct struct {
