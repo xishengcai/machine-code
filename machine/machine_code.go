@@ -23,47 +23,7 @@ func GetMachineData() (data types.Information) {
 	if err != nil {
 		panic(err)
 	}
-	machineData.LocalMacInfo, err = GetMACAddress()
-	if err != nil {
-		panic(err)
-	}
 	return machineData
-}
-
-func GetBoardSerialNumber() (data string, err error) {
-	var osMachine OsMachineInterface
-	if runtime.GOOS == "darwin" {
-		osMachine = os.MacMachine{}
-	} else if runtime.GOOS == "linux" {
-		osMachine = os.LinuxMachine{}
-	} else if runtime.GOOS == "windows" {
-		osMachine = os.WindowsMachine{}
-	}
-	return osMachine.GetBoardSerialNumber()
-}
-
-func GetPlatformUUID() (data string, err error) {
-	var osMachine OsMachineInterface
-	if runtime.GOOS == "darwin" {
-		osMachine = os.MacMachine{}
-	} else if runtime.GOOS == "linux" {
-		osMachine = os.LinuxMachine{}
-	} else if runtime.GOOS == "windows" {
-		osMachine = os.WindowsMachine{}
-	}
-	return osMachine.GetPlatformUUID()
-}
-
-func GetCpuSerialNumber() (data string, err error) {
-	var osMachine OsMachineInterface
-	if runtime.GOOS == "darwin" {
-		osMachine = os.MacMachine{}
-	} else if runtime.GOOS == "linux" {
-		osMachine = os.LinuxMachine{}
-	} else if runtime.GOOS == "windows" {
-		osMachine = os.WindowsMachine{}
-	}
-	return osMachine.GetCpuSerialNumber()
 }
 
 func GetMACAddress() (string, error) {
@@ -112,20 +72,4 @@ func GetLocalIpAddr() (string, error) {
 	localAddr := conn.LocalAddr().(*net.UDPAddr)
 	ip := strings.Split(localAddr.String(), ":")[0]
 	return ip, nil
-}
-
-func GetIpAddrAll() ([]string, error) {
-	var ipList []string
-	addrList, err := net.InterfaceAddrs()
-	if err != nil {
-		return ipList, err
-	}
-	for _, address := range addrList {
-		if ipNet, ok := address.(*net.IPNet); ok && !ipNet.IP.IsLoopback() && !ipNet.IP.IsLinkLocalUnicast() {
-			if ipNet.IP.To4() != nil {
-				ipList = append(ipList, ipNet.IP.To4().String())
-			}
-		}
-	}
-	return ipList, nil
 }
