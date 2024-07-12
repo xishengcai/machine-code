@@ -10,7 +10,7 @@ import (
 	"github.com/xishengcai/machine-code/machine/types"
 )
 
-func GetMachineData() (data types.Information) {
+func GetMachineData() (data types.Information, err error) {
 	var osMachine OsMachineInterface
 	if runtime.GOOS == "darwin" {
 		osMachine = os.MacMachine{}
@@ -19,11 +19,7 @@ func GetMachineData() (data types.Information) {
 	} else if runtime.GOOS == "windows" {
 		osMachine = os.WindowsMachine{}
 	}
-	machineData, err := osMachine.GetMachine()
-	if err != nil {
-		panic(err)
-	}
-	return machineData
+	return osMachine.GetMachine()
 }
 
 func GetMACAddress() (string, error) {
